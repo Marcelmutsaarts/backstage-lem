@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Backstage · Leisure & Events</title>
+<meta name="description" content="Backstage: een interactieve leeromgeving voor Leisure & Events Management. Tien activiteiten van idee tot evaluatie, met Crowd Control als 3D-simulatie.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f6f0e4; --paper2:#eee4d1; --card:#fffaf1; --ink:#1d2440; --muted:#646a80; --line:#ddd2bd;
+  --coral:#ff5a3c; --teal:#13998f; --sun:#ffc93c; --lilac:#7b6cf0; --night:#141a33;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#11142a;--paper2:#191d38;--card:#1b2040;--ink:#f3eee4;--muted:#a3a9c2;--line:#2c3258;--coral:#ff6a4d;--teal:#2fc2b5;--sun:#ffcf4d;--lilac:#9c90ff}}
+:root[data-theme="dark"]{--paper:#11142a;--paper2:#191d38;--card:#1b2040;--ink:#f3eee4;--muted:#a3a9c2;--line:#2c3258;--coral:#ff6a4d;--teal:#2fc2b5;--sun:#ffcf4d;--lilac:#9c90ff}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Instrument Sans",system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.35;background-image:radial-gradient(var(--line) 1px,transparent 1.2px);background-size:18px 18px}
+a{color:inherit}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px;position:relative}
+nav.top{display:flex;align-items:center;justify-content:space-between;padding:20px 0}
+.brand{display:flex;align-items:center;gap:10px;font:800 22px "Bricolage Grotesque",sans-serif;text-decoration:none;letter-spacing:-.01em}
+.brand i{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:9px;background:var(--coral);color:#fff;font-style:normal;transform:rotate(-6deg);box-shadow:3px 3px 0 var(--ink)}
+nav.top .links{display:flex;gap:22px;font-size:14.5px;font-weight:600}
+nav.top .links a{text-decoration:none;color:var(--muted)}nav.top .links a:hover{color:var(--ink)}
+.hero{display:grid;grid-template-columns:1fr 1.08fr;gap:40px;align-items:center;padding:28px 0 8px}
+.eyebrow{font:600 12px "JetBrains Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--coral)}
+h1{font:800 clamp(42px,6.2vw,76px)/.98 "Bricolage Grotesque",sans-serif;letter-spacing:-.03em;margin:12px 0 18px}
+h1 .hl{background:linear-gradient(transparent 62%,var(--sun) 62%);padding:0 .05em}
+.lead{font-size:18px;max-width:540px}
+.lead.sm{font-size:16px;color:var(--muted)}
+.phases{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 0}
+.phase{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;padding:7px 12px;border-radius:999px;background:var(--card);border:1.5px solid var(--ink)}
+.phase b{width:10px;height:10px;border-radius:50%}
+.cta{display:inline-flex;align-items:center;gap:10px;margin-top:26px;background:var(--ink);color:var(--paper);text-decoration:none;font-weight:700;padding:14px 20px;border-radius:12px;box-shadow:4px 4px 0 var(--coral);transition:transform .15s,box-shadow .15s}
+.cta:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--coral)}
+.map{position:relative;background:var(--card);border:2px solid var(--ink);border-radius:20px;padding:14px;box-shadow:8px 8px 0 var(--ink)}
+.map header{display:flex;justify-content:space-between;font:600 11px "JetBrains Mono",monospace;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;padding:2px 4px 10px}
+.map svg{width:100%;height:auto;display:block;border-radius:12px}
+.stop{cursor:pointer}
+.stop circle.s{stroke:var(--ink);stroke-width:2.5}
+.stop text{font:800 15px "Bricolage Grotesque",sans-serif;fill:#fff;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.stop.off circle.s{fill:var(--card)!important;stroke-dasharray:4 3;stroke-width:2}
+.stop.off text{fill:var(--muted)}
+.stop .ring{fill:none;stroke:var(--coral);stroke-width:3;opacity:0}
+.stop:not(.off) .ring{animation:ring 2.2s infinite}
+@keyframes ring{0%{opacity:.8;r:16}100%{opacity:0;r:34}}
+.stop:hover circle.s,.stop.hl circle.s{stroke-width:4.5}
+.stop .tip{opacity:0;transition:opacity .15s;pointer-events:none}
+.stop:hover .tip,.stop.hl .tip{opacity:1}
+.tip rect{fill:var(--ink)}.tip text{fill:var(--paper)!important;font:600 12px "Instrument Sans",sans-serif!important;text-anchor:start!important}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);padding:10px 4px 0}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:50%;vertical-align:-2px;margin-right:6px;border:1.5px solid var(--ink)}
+
+section{padding:64px 0 6px}
+h2{font:800 clamp(30px,3.8vw,44px)/1.05 "Bricolage Grotesque",sans-serif;letter-spacing:-.02em;margin:6px 0 10px}
+.sub{color:var(--muted);max-width:680px;margin:0 0 24px;font-size:16px}
+.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:22px}
+.filters select,.filters input[type=search]{font:inherit;font-size:14px;background:var(--card);color:var(--ink);border:1.5px solid var(--ink);border-radius:10px;padding:9px 12px}
+.filters label{font-size:14px;display:flex;gap:6px;align-items:center}
+.count{margin-left:auto;font-size:13.5px;color:var(--muted)}
+.lane{margin:0 0 26px}
+.lane h3{display:flex;align-items:center;gap:10px;font:700 14px "JetBrains Mono",monospace;letter-spacing:.1em;text-transform:uppercase;margin:0 0 10px}
+.lane h3 b{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.act{position:relative;background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:16px 16px 14px;display:flex;flex-direction:column;gap:8px;transition:transform .15s,border-color .15s}
+.act .n{font:800 13px "JetBrains Mono",monospace;color:var(--muted)}
+.act h4{margin:0;font:700 20px/1.15 "Bricolage Grotesque",sans-serif;letter-spacing:-.01em}
+.act p{margin:0;font-size:14px;color:var(--muted)}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto;padding-top:6px}
+.tag{font-size:11.5px;font-weight:600;padding:3px 8px;border-radius:999px;background:var(--paper2);border:1px solid var(--line)}
+.act.off{border-style:dashed;background:transparent}
+.act.off h4{color:var(--muted)}
+.act .soon{font:600 11px "JetBrains Mono",monospace;color:var(--muted);letter-spacing:.06em}
+.act.hl{border-color:var(--coral);transform:translateY(-2px)}
+.feat{grid-column:1/-1;display:grid;grid-template-columns:1.1fr 1fr;gap:0;border:2px solid var(--ink);border-radius:20px;overflow:hidden;background:var(--card);box-shadow:6px 6px 0 var(--coral)}
+.feat .vis{background:var(--night);position:relative;min-height:300px}
+.feat .vis svg{position:absolute;inset:0;width:100%;height:100%}
+.feat .txt{padding:22px 24px;display:flex;flex-direction:column;gap:10px}
+.feat .txt h4{font-size:30px}
+.feat .kind{display:inline-flex;gap:6px;align-items:center;font:600 12px "JetBrains Mono",monospace;letter-spacing:.08em;color:var(--coral);text-transform:uppercase}
+.feat ul{margin:0;padding-left:18px;font-size:14.5px}
+.feat li{margin:3px 0}
+details{font-size:14px}
+summary{cursor:pointer;font-weight:700;color:var(--teal)}
+details ul{margin:8px 0 0}
+.open{align-self:flex-start;display:inline-flex;gap:8px;align-items:center;background:var(--coral);color:#fff;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:11px;box-shadow:3px 3px 0 var(--ink);margin-top:6px}
+.open:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+
+.cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.box{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:18px}
+.box .meta{font:600 11.5px "JetBrains Mono",monospace;letter-spacing:.08em;color:var(--coral);text-transform:uppercase}
+.box h3{margin:4px 0 6px;font:700 21px "Bricolage Grotesque",sans-serif}
+.box p,.box li{font-size:14.5px;color:var(--muted)}
+.box ul{padding-left:18px;margin:8px 0 0}
+table{width:100%;border-collapse:collapse;font-size:14px;margin-top:16px;background:var(--card);border:1.5px solid var(--line);border-radius:14px;overflow:hidden}
+th,td{text-align:left;padding:9px 14px;border-bottom:1px solid var(--line)}
+th{font:600 12px "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--paper2)}
+kbd{font:600 12px "JetBrains Mono",monospace;background:var(--paper2);border:1px solid var(--line);border-radius:5px;padding:1px 6px}
+.priv{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.priv div{border-top:3px solid var(--teal);padding-top:8px;font-size:14px;color:var(--muted)}
+.priv b{display:block;color:var(--ink);font-size:15px}
+footer{padding:54px 0 40px;color:var(--muted);font-size:13.5px}
+@media (max-width:960px){.hero{grid-template-columns:1fr}.feat{grid-template-columns:1fr}.feat .vis{min-height:230px}.cols3,.priv{grid-template-columns:1fr 1fr}nav.top .links{display:none}}
+@media (max-width:560px){.wrap{padding:0 16px}.cols3,.priv{grid-template-columns:1fr}.count{margin-left:0}.filters input[type=search]{flex:1 1 100%}th,td{padding:7px 8px}.map{box-shadow:5px 5px 0 var(--ink)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="top">
+    <a class="brand" href="#"><i>B</i>Backstage</a>
+    <div class="links"><a href="#route">De route</a><a href="#activiteiten">Activiteiten</a><a href="#docenten">Voor docenten</a><a href="#privacy">Privacy</a></div>
+  </nav>
+
+  <header class="hero">
+    <div>
+      <div class="eyebrow">Leeromgeving · Leisure &amp; Events Management</div>
+      <h1>Maak het evenement. <span class="hl">Voel de gevolgen.</span></h1>
+      <p class="lead">Backstage volgt de route van een festival: van het eerste idee tot de evaluatie. Elke halte op het terrein is een activiteit waarin je doet wat een eventprofessional doet: ontwerpen, rekenen, kiezen en verantwoorden.</p>
+      <p class="lead sm">Bij een rood bandje staat een activiteit klaar. De eerste is een stevige: zelf in de regiekamer zitten bij 1.800 bezoekers, een headliner en onweer.</p>
+      <div class="phases" id="phaseChips"></div>
+      <a class="cta" href="crowd.html">Open activiteit 8: Crowd Control <span aria-hidden="true">→</span></a>
+    </div>
+    <figure class="map" style="margin:0" id="route">
+      <header><span>Plattegrond · Backstage Fest</span><span>van idee tot afbraak</span></header>
+      <svg viewBox="0 0 640 440" role="img" aria-label="Festivalkaart met tien activiteiten langs de route">
+        <defs>
+          <pattern id="grass" width="10" height="10" patternUnits="userSpaceOnUse"><rect width="10" height="10" fill="#9ccc7a"/><path d="M2 8l1-3M6 9l1-4" stroke="#7fb35e" stroke-width="1"/></pattern>
+          <pattern id="stripe" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="12" fill="#ff5a3c"/><rect x="6" width="6" height="12" fill="#fff"/></pattern>
+        </defs>
+        <rect width="640" height="440" fill="#bfe0f0"/>
+        <path d="M40 70 Q60 20 180 26 Q330 10 470 30 Q610 40 612 150 Q630 280 590 360 Q540 425 380 418 Q200 430 90 400 Q20 360 30 250 Q20 140 40 70Z" fill="url(#grass)" stroke="#1d2440" stroke-width="3"/>
+        <path d="M70 92 Q80 62 180 60 Q330 50 460 64 Q575 76 578 160 Q590 270 556 338 Q510 392 380 388 Q210 396 112 370 Q60 340 66 250 Q58 150 70 92Z" fill="none" stroke="#1d2440" stroke-width="2" stroke-dasharray="7 6" opacity=".55"/>
+        <!-- main stage + crowd -->
+        <rect x="250" y="70" width="150" height="40" rx="4" fill="#1d2440"/><rect x="268" y="78" width="114" height="22" fill="#7b6cf0"/>
+        <g fill="#1d2440" opacity=".8"><circle cx="280" cy="128" r="3"/><circle cx="292" cy="124" r="3"/><circle cx="304" cy="130" r="3"/><circle cx="318" cy="125" r="3"/><circle cx="330" cy="131" r="3"/><circle cx="344" cy="126" r="3"/><circle cx="358" cy="129" r="3"/><circle cx="370" cy="124" r="3"/><circle cx="286" cy="140" r="3"/><circle cx="300" cy="144" r="3"/><circle cx="314" cy="140" r="3"/><circle cx="328" cy="146" r="3"/><circle cx="342" cy="141" r="3"/><circle cx="356" cy="145" r="3"/><circle cx="312" cy="156" r="3"/><circle cx="330" cy="160" r="3"/><circle cx="348" cy="155" r="3"/></g>
+        <!-- tent -->
+        <circle cx="500" cy="210" r="42" fill="url(#stripe)" stroke="#1d2440" stroke-width="3"/><circle cx="500" cy="210" r="6" fill="#1d2440"/>
+        <!-- idea tent -->
+        <path d="M110 150 L150 118 L190 150 Z" fill="#ffc93c" stroke="#1d2440" stroke-width="2.5"/><rect x="118" y="150" width="64" height="26" fill="#ffe7a3" stroke="#1d2440" stroke-width="2.5"/>
+        <!-- info booth -->
+        <rect x="96" y="232" width="56" height="34" rx="4" fill="#13998f" stroke="#1d2440" stroke-width="2.5"/><text x="124" y="254" text-anchor="middle" font-family="Bricolage Grotesque" font-weight="800" font-size="16" fill="#fff">i</text>
+        <!-- food & bars -->
+        <g stroke="#1d2440" stroke-width="2.5"><rect x="380" y="320" width="34" height="24" fill="#ff5a3c"/><rect x="420" y="320" width="34" height="24" fill="#ffc93c"/><rect x="460" y="320" width="34" height="24" fill="#13998f"/></g>
+        <!-- office building (vergunning) outside -->
+        <rect x="16" y="300" width="58" height="56" fill="#f6f0e4" stroke="#1d2440" stroke-width="2.5"/><path d="M10 302 L45 280 L80 302Z" fill="#ff5a3c" stroke="#1d2440" stroke-width="2.5"/><rect x="34" y="330" width="20" height="26" fill="#1d2440"/>
+        <!-- gate -->
+        <rect x="246" y="398" width="10" height="34" fill="#1d2440"/><rect x="330" y="398" width="10" height="34" fill="#1d2440"/><rect x="240" y="392" width="106" height="14" fill="#ff5a3c" stroke="#1d2440" stroke-width="2"/>
+        <!-- recycle -->
+        <g stroke="#1d2440" stroke-width="2"><rect x="548" y="282" width="16" height="22" fill="#13998f"/><rect x="566" y="282" width="16" height="22" fill="#ffc93c"/><rect x="530" y="282" width="16" height="22" fill="#7b6cf0"/></g>
+        <!-- trees -->
+        <g fill="#2f7a4a" stroke="#1d2440" stroke-width="2"><circle cx="70" cy="60" r="14"/><circle cx="600" cy="90" r="16"/><circle cx="610" cy="390" r="14"/><circle cx="40" cy="410" r="12"/><circle cx="500" cy="30" r="12"/></g>
+        <!-- route -->
+        <path id="routePath" d="M150 162 C130 200 110 220 124 250 C140 290 200 300 250 240 C290 190 300 150 325 135 C350 120 430 140 470 190 C500 230 420 250 330 230 C250 214 200 330 150 330 C80 330 60 330 45 330 M45 330 C120 360 250 330 330 295 C390 268 470 300 556 293 C600 290 560 360 470 365 C400 370 330 380 293 405" fill="none" stroke="#1d2440" stroke-width="3" stroke-dasharray="2 9" stroke-linecap="round"/>
+        <g id="stops"></g>
+      </svg>
+      <div class="legend"><span><i style="background:var(--coral)"></i>Activiteit beschikbaar</span><span><i style="background:transparent;border-style:dashed"></i>Nog in ontwikkeling</span><span><i style="background:var(--sun)"></i>fase-kleur in de lijst</span></div>
+    </figure>
+  </header>
+
+  <section id="activiteiten">
+    <div class="eyebrow">Tien activiteiten · vijf fasen</div>
+    <h2>Van idee tot evaluatie</h2>
+    <p class="sub">Elke activiteit sluit aan op wat een eventprofessional echt doet. Je kunt ze los gebruiken bij een challenge of project, of in volgorde als leerlijn.</p>
+    <div class="filters">
+      <select id="fPhase" aria-label="Fase"><option value="">Alle fasen</option></select>
+      <select id="fField" aria-label="Werkveld"><option value="">Alle werkvelden</option></select>
+      <select id="fYear" aria-label="Studiejaar"><option value="">Alle jaren</option><option value="1">Jaar 1</option><option value="2">Jaar 2</option><option value="3">Jaar 3</option></select>
+      <label><input type="checkbox" id="fAvail"> Alleen beschikbaar</label>
+      <input type="search" id="fQ" placeholder="Zoeken, bijv. ticketing" aria-label="Zoeken">
+      <span class="count" id="count"></span>
+    </div>
+    <div id="lanes"></div>
+  </section>
+
+  <section id="docenten">
+    <div class="eyebrow">Voor docenten</div>
+    <h2>Zo zet je Backstage in</h2>
+    <p class="sub">De activiteiten draaien in de browser, zonder account. Deel de link in de ELO of open een activiteit op het digibord.</p>
+    <div class="cols3">
+      <div class="box"><div class="meta">Zelfstandig · 15–20 min</div><h3>Verkennen</h3><p>Studenten verkennen de omgeving, klikken op de genummerde punten (uitleg, praktijk, rekenvoorbeeld, denkvraag) en spelen met de knoppen in de regiekamer.</p></div>
+      <div class="box"><div class="meta">Tweetallen · 30–45 min</div><h3>Missies</h3><p>Zeven missies volgens RTTI: aanwijzen, rekenen, het scenario zelf ‘oplossen’ in de simulatie en tot slot een advies aan de gemeente schrijven.</p><ul><li>De simulatie controleert zichzelf.</li><li>Er wordt niets opgeslagen.</li></ul></div>
+      <div class="box"><div class="meta">Werkcollege · digibord</div><h3>Presenteren</h3><p>Volledig scherm, grote cijfers en geluid: publiek, beat van de headliner, onweer en een omroepbericht bij de ontruiming. Laat de groep stemmen over maatregelen en speel het direct af.</p></div>
+    </div>
+    <table>
+      <thead><tr><th>Toets</th><th>Crowd Control</th></tr></thead>
+      <tbody>
+        <tr><td><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></td><td>Deuren open · headliner · onweer (scenario start opnieuw)</td></tr>
+        <tr><td><kbd>H</kbd></td><td>Drukte-kaart (personen per m²) aan of uit</td></tr>
+        <tr><td><kbd>Spatie</kbd></td><td>Pauzeren of hervatten</td></tr>
+        <tr><td><kbd>→</kbd> <kbd>←</kbd></td><td>Volgend of vorig tabje of punt (werkt met een clicker)</td></tr>
+        <tr><td><kbd>C</kbd> · <kbd>G</kbd> · <kbd>L</kbd></td><td>Camerarit · geluid · labels</td></tr>
+        <tr><td><kbd>Esc</kbd></td><td>Paneel sluiten of presentatie stoppen</td></tr>
+      </tbody>
+    </table>
+    <p class="sub" style="margin-top:16px"><b>Let op:</b> Crowd Control is een leermodel, geen gecertificeerde crowd-simulatie. De getallen (zoals 6 bezoekers per minuut per beveiligingsstraat en 60 personen per meter per minuut door een uitgang) zijn bewust eenvoudig gekozen, zodat studenten kunnen narekenen. Echte eisen stelt de gemeente, met advies van de veiligheidsregio.</p>
+  </section>
+
+  <section id="privacy">
+    <div class="eyebrow">Privacy</div>
+    <h2>Veilig backstage</h2>
+    <div class="priv">
+      <div><b>Geen account</b>Studenten hoeven niet in te loggen.</div>
+      <div><b>Geen cookies</b>Backstage plaatst geen cookies.</div>
+      <div><b>Geen tracking</b>Geen analyse- of advertentiesoftware.</div>
+      <div><b>Niets bewaard</b>Antwoorden verdwijnen bij sluiten.</div>
+    </div>
+  </section>
+  <footer>Proof of concept · Backstage, leeromgeving voor Leisure &amp; Events Management · Lettertypen via Google Fonts, 3D-techniek (three.js) via jsDelivr.</footer>
+</div>
+
+<script>
+const PHASES=[{k:'idee',n:'Idee & concept',c:'#ffc93c'},{k:'ontwerp',n:'Ontwerp',c:'#7b6cf0'},{k:'voorb',n:'Voorbereiding',c:'#13998f'},{k:'uitv',n:'Uitvoering',c:'#ff5a3c'},{k:'eval',n:'Evaluatie',c:'#1d2440'}];
+const FIELDS=['Muziek & dans','Sport & e-sports','Cultuur','Business events','Attracties & leisure','Urban life & placemaking'];
+const ACTS=[
+ {n:1,ph:'idee',x:150,y:162,t:'Belevingsontwerp',s:'Ontwerp de customer journey van een festivalganger, van ticket kopen tot thuiskomen.',f:FIELDS,y1:[1],k:'beleving experience design pine gilmore customer journey'},
+ {n:2,ph:'idee',x:124,y:250,t:'Doelgroep & persona’s',s:'Voor wie organiseer je het eigenlijk? Bouw persona’s op basis van echte data.',f:['Muziek & dans','Cultuur','Sport & e-sports'],y1:[1],k:'doelgroep persona segmentatie'},
+ {n:3,ph:'ontwerp',x:325,y:135,t:'Programmering & timetable',s:'Bouw een line-up en timetable die het publiek over het terrein laat stromen.',f:['Muziek & dans','Cultuur','Sport & e-sports'],y1:[1,2],k:'line-up programmering timetable'},
+ {n:4,ph:'ontwerp',x:470,y:190,t:'Siteplan',s:'Van leeg weiland naar festivalterrein: zones, looproutes, zichtlijnen en voorzieningen.',f:['Muziek & dans','Urban life & placemaking','Attracties & leisure'],y1:[2],k:'siteplan plattegrond zones routing'},
+ {n:5,ph:'voorb',x:330,y:230,t:'Begroting & break-even',s:'Hoeveel tickets moet je verkopen voordat je geld verdient? Speel met kosten, prijs en sponsoring.',f:['Business events','Muziek & dans','Sport & e-sports'],y1:[1],k:'begroting break-even financieel sponsoring'},
+ {n:6,ph:'voorb',x:150,y:330,t:'Marketing & ticketing',s:'Van early bird tot uitverkocht: kies een prijsstrategie en zie de verkoop reageren.',f:['Muziek & dans','Cultuur','Sport & e-sports','Attracties & leisure'],y1:[2],k:'marketing ticketing prijsstrategie early bird'},
+ {n:7,ph:'voorb',x:45,y:330,t:'Vergunning & stakeholders',s:'De gemeente, de buren, de brandweer en de sponsor aan één tafel. Een rollenspel.',f:['Urban life & placemaking','Muziek & dans','Business events'],y1:[2],k:'vergunning gemeente stakeholders buren rollenspel'},
+ {n:8,ph:'uitv',x:330,y:295,t:'Crowd Control',s:'Veilig én vol beleving: zit zelf in de regiekamer van een festival in 3D, met instroom, headliner en ontruiming.',f:['Muziek & dans','Sport & e-sports','Attracties & leisure','Urban life & placemaking'],y1:[1,2],url:'crowd.html',k:'crowd management veiligheid dichtheid ontruiming wavebreaker 3d simulatie'},
+ {n:9,ph:'uitv',x:556,y:293,t:'Duurzaamheid & impact',s:'Afval, energie, mobiliteit en CO₂ van één festivaldag, en wat jij eraan kunt doen.',f:FIELDS,y1:[2,3],k:'duurzaamheid afval energie co2 impact social innovation'},
+ {n:10,ph:'eval',x:293,y:405,t:'Evaluatie & bezoekersonderzoek',s:'Meet of het gelukt is: enquête, NPS, data van de dag en maatschappelijke impact.',f:FIELDS,y1:[2,3],k:'evaluatie onderzoek enquete nps data'},
+];
+const phaseOf=k=>PHASES.find(p=>p.k===k);
+// chips
+document.getElementById('phaseChips').innerHTML=PHASES.map(p=>`<span class="phase"><b style="background:${p.c}"></b>${p.n}</span>`).join('');
+const fPhase=document.getElementById('fPhase'),fField=document.getElementById('fField'),fYear=document.getElementById('fYear'),fAvail=document.getElementById('fAvail'),fQ=document.getElementById('fQ');
+PHASES.forEach(p=>fPhase.insertAdjacentHTML('beforeend',`<option value="${p.k}">${p.n}</option>`));
+FIELDS.forEach(f=>fField.insertAdjacentHTML('beforeend',`<option>${f}</option>`));
+// map stops
+const stops=document.getElementById('stops');
+ACTS.forEach(a=>{const g=document.createElementNS('http://www.w3.org/2000/svg','g');g.setAttribute('class','stop'+(a.url?'':' off'));g.dataset.n=a.n;
+  const c=phaseOf(a.ph).c;const tw=Math.max(110,a.t.length*7.2+20);const tx=a.x+tw+30>640?a.x-tw-22:a.x+22;
+  g.innerHTML=`<circle class="ring" cx="${a.x}" cy="${a.y}" r="16"/><circle class="s" cx="${a.x}" cy="${a.y}" r="16" fill="${a.url?'#ff5a3c':c}"/><text x="${a.x}" y="${a.y+1}">${a.n}</text>
+  <g class="tip"><rect x="${tx}" y="${a.y-13}" width="${tw}" height="26" rx="6"/><text x="${tx+10}" y="${a.y+1}" style="dominant-baseline:central">${a.t}${a.url?'':' · binnenkort'}</text></g><title>${a.n}. ${a.t}</title>`;
+  g.addEventListener('click',()=>{if(a.url){location.href=a.url;return;}const el=document.querySelector(`.act[data-n="${a.n}"]`);if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.add('hl');setTimeout(()=>el.classList.remove('hl'),1600);}});
+  g.addEventListener('mouseenter',()=>{const el=document.querySelector(`.act[data-n="${a.n}"]`);if(el)el.classList.add('hl');});
+  g.addEventListener('mouseleave',()=>{const el=document.querySelector(`.act[data-n="${a.n}"]`);if(el)el.classList.remove('hl');});
+  stops.appendChild(g);});
+const feat=a=>`<article class="feat act" data-n="${a.n}">
+  <a class="vis" href="${a.url}" aria-label="Open ${a.t}"><svg viewBox="0 0 400 300" aria-hidden="true">
+    <defs><radialGradient id="hg" cx=".5" cy=".3" r=".5"><stop offset="0" stop-color="#ff3b3b" stop-opacity=".85"/><stop offset=".45" stop-color="#ff8a3c" stop-opacity=".6"/><stop offset=".8" stop-color="#ffd23c" stop-opacity=".25"/><stop offset="1" stop-color="#3ccf6e" stop-opacity="0"/></radialGradient></defs>
+    <rect width="400" height="300" fill="#141a33"/><path d="M30 40h340v230H30z" fill="#2f5a2a" stroke="#c9ced6" stroke-dasharray="4 4"/>
+    <rect x="130" y="40" width="140" height="30" fill="#0b0d18"/><rect x="150" y="46" width="100" height="16" fill="#7b6cf0"/>
+    <ellipse cx="200" cy="112" rx="120" ry="60" fill="url(#hg)"/>
+    ${Array.from({length:260},(_,i)=>{const r=Math.sqrt(i/260),t=i*2.4;const x=200+Math.cos(t)*r*115,y=118+Math.sin(t)*r*58+r*r*20;return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.2" fill="${['#ff5a3c','#ffc93c','#f2efe6','#25b5a8','#6a6ff0'][i%5]}"/>`;}).join('')}
+    <circle cx="200" cy="180" r="10" fill="#0b0d18"/><path d="M80 120v34M320 120v34" stroke="#ffd23c" stroke-width="3"/>
+    <circle cx="335" cy="220" r="26" fill="#d9473a"/><path d="M309 220a26 26 0 0 1 52 0" fill="#f2efe6" opacity=".5"/>
+    <rect x="170" y="262" width="60" height="8" fill="#ff5a3c"/><rect x="26" y="150" width="8" height="24" fill="#2bff7a"/><rect x="366" y="190" width="8" height="24" fill="#2bff7a"/>
+    <g font-family="JetBrains Mono" font-size="11" fill="#f3eee4"><rect x="250" y="248" width="128" height="40" rx="6" fill="rgba(12,15,28,.85)" stroke="rgba(255,77,77,.7)"/><text x="260" y="265">MAX. DICHTHEID</text><text x="260" y="281" font-size="14" font-weight="600" fill="#ff4d4d">4,7 p/m²</text></g>
+  </svg></a>
+  <div class="txt"><span class="kind">★ Activiteit ${a.n} · 3D-simulatie · uitgewerkt</span><h4>${a.t}</h4><p>${a.s}</p>
+    <ul><li><b>3 scenario’s:</b> deuren open, headliner en onweer met ontruiming</li><li><b>Regiekamer:</b> beveiligingsstraten, wavebreaker, tegenprogrammering, bars en nooduitgangen</li><li><b>Live meten:</b> dichtheid in p/m², wachttijden, ontruimingstijd en beleving</li><li><b>7 missies</b> volgens RTTI, met als slot een advies aan de gemeente</li></ul>
+    <details><summary>Leerdoelen en lestip</summary><ul><li>Je berekent in- en uitstroomcapaciteit en wachttijden (wet van Little).</li><li>Je herkent risicovolle dichtheden en kiest passende crowd-management maatregelen.</li><li>Je weegt veiligheid, beleving en kosten tegen elkaar af.</li><li>Je onderbouwt een advies aan de gemeente met data.</li></ul><p style="margin:8px 0 0"><b>Lestip:</b> laat groepjes elk één maatregel ‘verkopen’ aan de klas, speel het daarna klassikaal af op het digibord en vergelijk de cijfers.</p></details>
+    <div class="tags">${a.f.map(f=>`<span class="tag">${f}</span>`).join('')}<span class="tag">Jaar ${a.y1.join('–')}</span></div>
+    <a class="open" href="${a.url}">Open Crowd Control →</a></div></article>`;
+const card=a=>`<article class="act ${a.url?'':'off'}" data-n="${a.n}"><span class="n">${String(a.n).padStart(2,'0')}</span><h4>${a.t}</h4><p>${a.s}</p>${a.url?'':'<span class="soon">IN ONTWIKKELING</span>'}<div class="tags">${a.f.slice(0,3).map(f=>`<span class="tag">${f}</span>`).join('')}${a.f.length>3?`<span class="tag">+${a.f.length-3}</span>`:''}<span class="tag">Jaar ${a.y1.join('–')}</span></div></article>`;
+function render(){const ph=fPhase.value,fi=fField.value,yr=fYear.value,av=fAvail.checked,q=fQ.value.trim().toLowerCase();
+  const vis=ACTS.filter(a=>(!ph||a.ph===ph)&&(!fi||a.f.includes(fi))&&(!yr||a.y1.includes(+yr))&&(!av||a.url)&&(!q||(a.t+' '+a.s+' '+a.k).toLowerCase().includes(q)));
+  document.getElementById('lanes').innerHTML=PHASES.map(p=>{const list=vis.filter(a=>a.ph===p.k);if(!list.length)return '';return `<div class="lane"><h3><b style="background:${p.c}"></b>${p.n}</h3><div class="grid">${list.map(a=>a.url?feat(a):card(a)).join('')}</div></div>`;}).join('')||'<p class="sub">Geen activiteiten gevonden.</p>';
+  const nd=vis.filter(a=>a.url).length;document.getElementById('count').textContent=`${vis.length} activiteiten · ${nd} beschikbaar`;
+  stops.querySelectorAll('.stop').forEach(g=>g.style.opacity=vis.some(a=>a.n==g.dataset.n)?1:.25);}
+[fPhase,fField,fYear,fAvail,fQ].forEach(el=>el.addEventListener('input',render));render();
+</script>
+</body>
+</html>
